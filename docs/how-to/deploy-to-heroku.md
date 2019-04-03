@@ -20,15 +20,6 @@ if __name__ == "__main__":
     app.run()
 ```
 
-Make sure it is running in local machine.
-
-```
-python app.py
-# Started server process
-# Waiting for application startup.
-# Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
-```
-
 ## Procfile
 
 The [Procfile](https://devcenter.heroku.com/articles/procfile) is a text file located in the root directory of your project which explicitly declares what command should be executed to start your app.
@@ -41,7 +32,7 @@ web: gunicorn -w 4 -k uvicorn.workers.UvicornWorker app:app
 
 ## requirements.txt
 
-Heroku recognizes an app as a Python app by the existence of a Pipfile or requirements.txt file in the root directory. So mention all your python dependencies with the version in this file.
+Heroku recognizes a Python app by the existence of requirements.txt file in the root directory (see [Python Dependencies via Pip](https://devcenter.heroku.com/articles/python-pip)). Here's an example of what yours may look like:
 
 ```
 bocadillo
@@ -65,11 +56,17 @@ To interact with Heroku from the command line, make sure you have the [Heroku CL
 ```sh
 heroku login    # This will ask you to enter email id and password
 
-heroku create   # This will create an application in Heroku which you can see on Heroku Dashboard
+heroku create my-bocadillo-app  # This will create an application with given name in Heroku
 
+heroku git:remote -a my-bocadillo-app   # This will add a git remote to an app repository so that you can refer to it when deploying
+```
+
+## Commit the changes and deploy!
+
+```
 git add .       # Add all the files
 
-git commit -m “App ready to deploy”     # Commit the code
+git commit -m “Ready to deploy to Heroku”     # Commit the code
 
 git push heroku master      # This will push the entire app on Heroku Server
 
