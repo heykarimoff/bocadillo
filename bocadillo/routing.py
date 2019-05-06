@@ -112,6 +112,7 @@ class BaseRouter(typing.Generic[_R, _V]):
     __slots__ = ("routes", "route_class")
 
     route_class: typing.Type[_R]
+    auto_trailing_slash: bool = True
 
     def __init__(self):
         self.routes: typing.Dict[str, _R] = {}
@@ -270,6 +271,9 @@ class HTTPRouter(HTTPApp, BaseRouter[HTTPRoute, View]):
 
     async def __call__(self, req: Request, res: Response) -> Response:
         match = self.match(req.url.path)
+
+        if self.auto_trailing_slash and not req.url.path.endswith("/"):
+            return Redirect(f"{req.url.path}/").response
 
         if match is None:
             raise HTTPError(status=404)
